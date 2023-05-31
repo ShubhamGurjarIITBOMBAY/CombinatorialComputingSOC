@@ -1,0 +1,43 @@
+n=input("the size of the matrix")
+ar=[][]
+
+for x in range(n):
+    for y in range (n):
+        if x==y :
+            ar[x][y]="NULL"
+
+        ar[x][y]=input("enter the data")
+def graph(y,sum1,sum2,ar,n,state,m1,m2,lim,ans):
+    if m1==lim and m2==lim:
+        if sum1>sum2:
+            ans+"True"
+        else :
+            ans+"False"
+    for z in range(n):
+        if state==True:
+            sum2=sum2+ar[z][y]
+            m2+=1
+            state=False
+
+            graph(z,sum1,sum2,ar,n,state,m1,m2,lim,ans)
+            m2-=1
+            sum2=sum2-ar[z][y]
+            state=True
+        else:
+            sum1=sum1+ar[z][y]
+            m1+=1
+            state=True
+            graph(z,sum1,sum2,ar,n,state,m1,m2,lim,ans)
+            m1-=1
+            sum1=sum1-ar[z][y]
+            state=False
+def check(arr):
+
+    for i in len(arr):
+        if arr[i]==True:
+            print("True")
+            return True
+
+
+    return False
+    
