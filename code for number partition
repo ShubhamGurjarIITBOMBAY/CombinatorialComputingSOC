@@ -1,0 +1,12 @@
+def Q(n,k):
+    if n==0 or k==1:
+        return 1
+    return Q(n-k,k)+Q(n,k-1)
+    
+def R(n,k):
+    if n==0:
+
+        return 1
+    if k==0:
+        return 0
+    return  R(n-k,k)+R(n,k-1)
