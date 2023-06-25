@@ -1,0 +1,67 @@
+class Edge:
+   def __init__(self,u,v,capacity):
+      self.u=u
+      self.v=v
+      self.capacity=capacity
+
+
+
+
+
+
+
+class FordFulkerson:
+    def __init__(self):
+        self.graph = defaultdict(list)
+
+    def add_edge(self, u, v, capacity):
+        forward_edge = Edge(u, v, capacity)
+        backward_edge = Edge(v, u, 0)
+        forward_edge.backward_edge = backward_edge
+        backward_edge.backward_edge = forward_edge
+        self.graph[u].append(forward_edge)
+        self.graph[v].append(backward_edge)
+    def bfs(self, source, sink):
+        queue = [(source, float('inf'))]
+        visited = set()
+        path = {}
+
+        while queue:
+            u, flow = queue.pop(0)
+            visited.add(u)
+
+            for edge in self.graph[u]:
+                v = edge.v
+                if v not in visited and edge.capacity - edge.flow > 0:
+                    path[v] = edge
+                    if v == sink:
+                        return path
+                    queue.append((v, min(flow, edge.capacity - edge.flow)))
+
+        return None
+    def find_max_flow(self, source, sink):
+        max_flow = 0
+
+        while True:
+            path = self.bfs(source, sink)
+            if not path:
+                break
+
+            path_flow = float('inf')
+            v = sink
+            while v != source:
+                edge = path[v]
+                path_flow = min(path_flow, edge.capacity - edge.flow)
+                v = edge.u
+
+            v = sink
+            while v != source:
+                edge = path[v]
+                edge.flow += path_flow
+                edge.backward_edge.flow -= path_flow
+                v = edge.u
+
+            max_flow += path_flow
+
+        return max_flow
+
